@@ -69,7 +69,7 @@ function Loginpop() {
       >
         SIGN IN
       </button>
-      {signin?<button onClick={finalstaus}>LOG-OUT</button>:<></>}
+      {signin?<button  className="mt-8 px-8 py-3 bg-red-600 hover:bg-purple-700 rounded-full text-xl font-semibold transition" onClick={finalstaus}>LOG-OUT</button>:<></>}
 
       {login && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
