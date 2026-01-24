@@ -1,7 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit"
+import { Register, Signin } from "./chunk";
 const messageslice=createSlice({
     name:"chatapp",
-    initialState:{message:"",response:[],profilename:"",profileimage:"images.jpg",friendname:"",friendmessage:"",friendresponse:[],loginstatus:"boolean value",},
+    initialState:{message:"",response:[],profilename:"",profileimage:"images.jpg",friendname:"",friendmessage:"",friendresponse:[],loginstatus:[],signin:false,thefinal:""},
     reducers:{
         textdata:(state,action)=>{
             state.message=action.payload;
@@ -49,9 +50,21 @@ const messageslice=createSlice({
         deletefriendname(state){
             state.friendname="";
         },
-        loginstatus(state,action){
-            state.loginstatus=action.payload;
+        thefinal(state,action){
+            state.thefinal=action.payload;
         }
+        
+    },
+    extraReducers:(builder)=>{
+        builder.addCase(Signin.fulfilled,(state,action)=>{
+            state.loginstatus.push(action.payload);
+            state.signin=true;
+        });
+        builder.addCase(Register.fulfilled,(state,action)=>{
+            state.loginstatus.push(action.payload);
+
+        })
+       
     }
 
 })

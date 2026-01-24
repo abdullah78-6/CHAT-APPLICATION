@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import {useDispatch, useSelector} from "react-redux"
 import { control } from "../redux/chatslice.js";
-import { pushmessage } from "../redux/chunk.js";
+import { pushmessage} from "../redux/chunk.js";
 import {io} from "socket.io-client";
 import { socket } from "../redux/socket.js";
 import { Link, useNavigate } from "react-router-dom";
 import Loginpop from "./signpop.jsx";
+import { toast, ToastContainer } from "react-toastify";
 
 function Chat(){
     const text=useRef();
@@ -15,8 +16,8 @@ function Chat(){
     const reply=useSelector(state=>state.main.response);
     const dispatch=useDispatch();
     const navigate=useNavigate();
-    const loginstatus=useSelector(state=>state.main.loginstatus);
     const friendresponse=useSelector(state=>state.main.friendresponse);
+    let[msg,setmsg]=useState("PROFILE DELETED SUCESSFULLY");
     useEffect(()=>{
         socket.emit("joinRoom",{roomId:"user1-user2"});
         const handler=(data)=>{
@@ -51,13 +52,15 @@ function Chat(){
     }
     function deleteprofilename(){
         dispatch(control.deleteprofile());
+        toast(msg);
     }
     function newprofile(){
         navigate("/pr");
     }
+    
      return (
     <div className="h-screen bg-slate-900 text-white flex flex-col">
-      
+      <ToastContainer/>
       <header className="bg-slate-800 px-6 py-4 flex items-center justify-between shadow-md">
         <h1 className="text-2xl font-bold">Chat Application</h1>
 
@@ -69,6 +72,10 @@ function Chat(){
               className="w-10 h-10 rounded-full object-cover border"
             />
           )}
+          <div>
+          
+          </div>
+          
           <span className="font-semibold">{prname || "Guest"}</span>
         </div>
       </header>
@@ -85,7 +92,7 @@ function Chat(){
               alt="profile"
               className="w-20 h-20 rounded-full border object-cover"
             />
-            <p className="font-bold">{prname}</p>
+            <p className="font-bold">USER-NAME:  {prname}</p>
           </div>
 
           <div className="flex flex-col gap-2 mt-4">

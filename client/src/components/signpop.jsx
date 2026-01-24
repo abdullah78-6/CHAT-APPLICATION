@@ -1,40 +1,60 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Register, RegisterStatus, Signin } from "../redux/chunk";
+import { Register, Signin } from "../redux/chunk.js";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import {ThreeDots} from "react-loader-spinner"
+import { ToastContainer, toast } from 'react-toastify';
+import { control } from "../redux/chatslice.js";
 
 function Loginpop() {
     const [state,setstate]=useState("LOGIN");
     const [login,setlogin]=useState(false);
     const [showpass,setshowpass]=useState(false);
+    const signin=useSelector(state=>state.main.signin);
+    const loginstatus=useSelector(state=>state.main.loginstatus);
+    const thefinal=useSelector(state=>state.main.thefinal);
+    const [loading,setloading]=useState(false);
     let email=useRef();
     let name=useRef();
     let password=useRef();
     const dispatch=useDispatch();
-    const navihate=useNavigate();
+    const navigate=useNavigate();
+    useEffect(()=>{
+      if(loginstatus.length>0){
+        const lastmessage=loginstatus[loginstatus.length-1].message;
+        toast(lastmessage);
+      }
+    },[loginstatus]);
+    useEffect(()=>{
+      if(signin){
+            setloading(true);
+        setTimeout(()=>{
+          setloading(false);
+         
+          navigate("/pr");
+
+        },4000);
+      }
+
+
+},[signin]);
     function Login(e){
         e.preventDefault();
-        console.log("LOGIN CREDINTIALS");
-        console.log(email.current.value);
-        console.log(password.current.value);
         dispatch(Signin({email:email.current.value,password:password.current.value}));
 
     }
     function Signup(e){
         e.preventDefault();
-        console.log("SIGN UP  CREDINTIALS");
-        console.log(email.current.value);
-        console.log(name.current.value);
-        console.log(password.current.value);
         dispatch(Register({name:name.current.value,email:email.current.value,password:password.current.value}));
-        
         
 
     }
     function finalstaus(){
-        dispatch(RegisterStatus());
+        toast("NOW YOU CAN LEAVE THIS WEBSITE ")
+
 
     }
 
@@ -42,13 +62,14 @@ function Loginpop() {
     <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center">
       <h1 className="mt-10 text-4xl font-bold tracking-wide">CHAT APPLICATION</h1>
       <p className="mt-4 text-xl text-gray-300">Sign in to continue</p>
-
+<ToastContainer/>
       <button
         className="mt-8 px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-full text-xl font-semibold transition"
         onClick={() => setlogin(true)}
       >
         SIGN IN
       </button>
+      {signin?<button onClick={finalstaus}>LOG-OUT</button>:<></>}
 
       {login && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
@@ -113,6 +134,7 @@ function Loginpop() {
                   SIGN UP
                 </button>
               )}
+              {loading?<ThreeDots color="cyan" />:<></>}
             </form>
 
 
@@ -142,6 +164,8 @@ function Loginpop() {
           </div>
         </div>
       )}
+      <div>
+    </div>
     </div>
   );
     

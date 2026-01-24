@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { control } from "../redux/chatslice.js";
 import { socket } from "../redux/socket.js";
+import { toast, ToastContainer } from "react-toastify";
 
 function Friendchat(){
     const friendnames=useSelector(state=>state.main.friendname);
@@ -40,15 +41,18 @@ function Friendchat(){
 }
 function setfriendname(){
     dispatch(control.frname(frname.current.value));
+    toast("FRIEND ADDED SUCESSFULLY");
 
 }
 function deletefriendname(){
     dispatch(control.deletefriendname());
+        toast("FRIEND DELETED SUCESSFULLY");
 
 }
 
    return (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center p-4">
+      <ToastContainer/>
       
       <div className="w-full max-w-xl bg-slate-800 rounded-2xl p-4 shadow-lg">
         <h1 className="text-xl font-bold mb-3 text-center">FRIEND PROFILE</h1>

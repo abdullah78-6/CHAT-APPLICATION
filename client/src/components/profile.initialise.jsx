@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import { control } from "../redux/chatslice.js";
 import {useNavigate} from "react-router-dom";
 import { ThreeDots } from 'react-loader-spinner'
+import { ToastContainer, toast } from 'react-toastify';
 function Profile(){
     const dispatch=useDispatch();
     const primage=useSelector(state=>state.main.profileimage);
@@ -10,6 +11,7 @@ function Profile(){
     const setname=useRef();
     const setimagepath=useRef();
     const navigate=useNavigate();
+    let[msg,setmsg]=useState("");
     function Set(){
         dispatch(control.profilenames(setname.current.value));
         const file=setimagepath.current.files[0];
@@ -19,20 +21,31 @@ function Profile(){
         }
         dispatch(control.getdata());
           setloading(true);
+               toast("PROFILE CREATED SUCESSFULLY");
         setTimeout(()=>{
+     
+
             navigate("/chats");
             setloading(false);
           
 
-        },2000);
+        },4000);
         
 
     }
 
     return    (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center">
+      <ToastContainer/>
       <h1 className="mt-8 text-4xl font-bold tracking-wide">
         CHAT APPLICATION
+      </h1>
+
+
+
+
+      <h1 className="mt-8 text-3xl font-bold tracking-wide">
+        CREATE YOUR PROFILE
       </h1>
 
       <div className="mt-10 w-[90%] max-w-2xl bg-slate-800 rounded-2xl shadow-lg shadow-blue-500/30 p-8 flex flex-col items-center">
@@ -76,7 +89,7 @@ function Profile(){
               height="60"
               width="60"
               radius="9"
-              color="#22c55e"
+              color="cyan"
               ariaLabel="three-dots-loading"
               visible={true}
             />

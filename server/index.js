@@ -6,10 +6,15 @@ const collectionrouter=require("./routes/message.collection.js");
 const authrouter=require("./routes/auth.routes.js");
 const{Server}=require("socket.io");
 const connectiondb=require("./config/database.connection.js");
+const cookieparser=require("cookie-parser");
 connectiondb();
 const app=express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
+app.use(cookieparser());
 dotenv.config();
 const server=https.createServer(app);//socket.io only run with this server 
 app.use("/app",collectionrouter);
