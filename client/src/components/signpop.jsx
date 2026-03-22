@@ -23,24 +23,36 @@ function Loginpop() {
     const dispatch=useDispatch();
     const navigate=useNavigate();
     useEffect(()=>{
+      console.log(loginstatus);
       if(loginstatus.length>0){
         const lastmessage=loginstatus[loginstatus.length-1].message;
         toast(lastmessage);
       }
     },[loginstatus]);
     useEffect(()=>{
-      if(signin){
-            setloading(true);
+      if(loginstatus.length>0){
+        const last=loginstatus[loginstatus.length-1];
+        
+        if(last.status){
+           setloading(true);
+           localStorage.setItem("token",last.token);
+
+        
+           
         setTimeout(()=>{
           setloading(false);
-         
+        
           navigate("/pr");
 
-        },4000);
+         
+          
+
+        },5000);
       }
+    }
 
 
-},[signin]);
+},[loginstatus]);
     function Login(e){
         e.preventDefault();
         dispatch(Signin({email:email.current.value,password:password.current.value}));
@@ -53,13 +65,13 @@ function Loginpop() {
 
     }
     function finalstaus(){
-        toast("NOW YOU CAN LEAVE THIS WEBSITE ")
+        toast.error("NOW YOU CAN LEAVE THIS WEBSITE ")
 
 
     }
 
       return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center">
+    <form className="min-h-screen bg-slate-900 text-white flex flex-col items-center" onSubmit={state==="LOGIN"?Login:Signup}>
       <h1 className="mt-10 text-4xl font-bold tracking-wide">CHAT APPLICATION</h1>
       <p className="mt-4 text-xl text-gray-300">Sign in to continue</p>
 <ToastContainer/>
@@ -86,13 +98,14 @@ function Loginpop() {
             </div>
 
 
-            <form className="space-y-4">
+            <div className="space-y-4">
               {state === "SIGN-UP" && (
                 <input
                   ref={name}
                   type="text"
                   placeholder="Enter Name"
                   className="w-full px-4 py-2 rounded-xl bg-slate-700 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  required
                 />
               )}
 
@@ -101,6 +114,7 @@ function Loginpop() {
                 type="email"
                 placeholder="Email"
                 className="w-full px-4 py-2 rounded-xl bg-slate-700 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
               />
 
               <div className="relative">
@@ -109,6 +123,7 @@ function Loginpop() {
                   type={showpass ? "text" : "password"}
                   placeholder="Password"
                   className="w-full px-4 py-2 rounded-xl bg-slate-700 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  required
                 />
                 <span
                   className="absolute right-4 top-3 text-xl cursor-pointer text-gray-300"
@@ -121,21 +136,23 @@ function Loginpop() {
 
               {state === "LOGIN" ? (
                 <button
-                  onClick={Login}
+                  
                   className="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-xl font-bold transition"
+                  type="submit"
                 >
                   SIGN IN
                 </button>
               ) : (
                 <button
-                  onClick={Signup}
+                  
                   className="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-xl font-bold transition"
+                  type="submit"
                 >
                   SIGN UP
                 </button>
               )}
               {loading?<ThreeDots color="cyan" />:<></>}
-            </form>
+            </div>
 
 
             <div className="mt-6 text-center text-sm text-gray-300">
@@ -166,7 +183,7 @@ function Loginpop() {
       )}
       <div>
     </div>
-    </div>
+    </form>
   );
     
 

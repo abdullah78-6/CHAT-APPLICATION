@@ -58,7 +58,7 @@ const messageslice=createSlice({
     extraReducers:(builder)=>{
         builder.addCase(Signin.fulfilled,(state,action)=>{
             state.loginstatus.push(action.payload);
-            state.signin=true;
+            // state.signin=true;
         });
         builder.addCase(Register.fulfilled,(state,action)=>{
             state.loginstatus.push(action.payload);

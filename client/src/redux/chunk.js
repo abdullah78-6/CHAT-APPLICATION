@@ -1,6 +1,5 @@
 import { control } from "./chatslice.js";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
 export const pushmessage=createAsyncThunk(
     "push/msg",
     async({message})=>{

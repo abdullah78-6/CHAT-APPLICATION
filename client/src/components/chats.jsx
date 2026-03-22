@@ -17,6 +17,7 @@ function Chat(){
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const friendresponse=useSelector(state=>state.main.friendresponse);
+    const [token,setoken]=useState(false);
     let[msg,setmsg]=useState("PROFILE DELETED SUCESSFULLY");
     useEffect(()=>{
         socket.emit("joinRoom",{roomId:"user1-user2"});
@@ -32,7 +33,11 @@ function Chat(){
         return ()=>socket.off("receivemessage",handler);
     },[]);
    
-    
+    useEffect(()=>{
+      const tok=localStorage.getItem("token");
+      setoken(tok);
+
+    },[]);
     function Submitchat(){
       dispatch(control.textdata(text.current.value));
     const message=text.current.value;
@@ -56,6 +61,16 @@ function Chat(){
     }
     function newprofile(){
         navigate("/pr");
+    }
+    const logout=()=>{
+      if(token){
+
+      dispatch(control.deleteprofile());
+      localStorage.removeItem("token");
+      setoken(null);
+      toast.error("USER LOGOUT");
+      }
+
     }
     
      return (
@@ -110,14 +125,22 @@ function Chat(){
             >
               New Profile
             </button>
-
+            {token?
+            <button
+              onClick={logout}
+              className="bg-red-600 hover:bg-red-700 py-2 rounded-lg transition"
+            >
+              Logout
+            </button>
+            :<></>}
+{token?
             <Link
               to="/fr"
               target="_blank"
               className="text-center bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition"
             >
               Friend Chat
-            </Link>
+            </Link>:<p className="text-lg text-center text-red-500 capitalize ">login  to see your friend chat </p>}
           </div>
         </aside>
 

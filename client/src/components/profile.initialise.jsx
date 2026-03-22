@@ -12,6 +12,7 @@ function Profile(){
     const setimagepath=useRef();
     const navigate=useNavigate();
     let[msg,setmsg]=useState("");
+    const[profileimage,setprofileimage]=useState(false);
     function Set(){
         dispatch(control.profilenames(setname.current.value));
         const file=setimagepath.current.files[0];
@@ -53,7 +54,7 @@ function Profile(){
         <div className="mb-6">
           <img
             className="w-40 h-40 rounded-full border-4 border-green-500 object-cover"
-            src={primage}
+            src={profileimage?URL.createObjectURL(profileimage):primage}
             alt="profile-image"
           />
         </div>
@@ -81,6 +82,7 @@ function Profile(){
             ref={setimagepath}
             type="file"
             accept="image/*"
+            onChange={(e)=>setprofileimage(e.target.files[0])}
             className="w-full md:w-auto px-4 py-2 rounded-xl bg-slate-700 border border-slate-600 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-none cursor-pointer"
           />
 

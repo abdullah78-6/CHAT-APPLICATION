@@ -44,11 +44,11 @@ const Sign=async(req,res)=>{
     try{
          const user=await Userauthschema.findOne({email});
          if(!user){
-            return res.status(400).json({message:"USER DOES NOT EXIST "});
+            return res.status(400).json({message:"USER DOES NOT EXIST ",status:false});
          }
      const ismatch=await bcryptjs.compare(password,user.password);
          if(!ismatch){
-            return res.status(400).json({message:"INCORRECT PASSWORD"});
+            return res.status(400).json({message:"INCORRECT PASSWORD",status:false});
          }
          
          const token=await genratetoken(user.id);
@@ -57,12 +57,12 @@ const Sign=async(req,res)=>{
             sameSite:"strict",
             httpOnly:true,
          })
-         return res.status(200).json({message:"LOGIN SUCESSFULLY"});
+         return res.status(200).json({message:"LOGIN SUCESSFULLY",status:true,token});
 
 
     }
     catch(err){
-        return res.status(500).json({message:`SIGN IN ERROR ${err}`})
+        return res.status(500).json({message:`SIGN IN ERROR ${err}`});
 
     }
 }
