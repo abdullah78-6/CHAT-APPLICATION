@@ -20,6 +20,17 @@ function Chat(){
     const [token,setoken]=useState(false);
     let[msg,setmsg]=useState("PROFILE DELETED SUCESSFULLY");
     useEffect(()=>{
+      const saved=localStorage.getItem("primage");
+      const saved2=localStorage.getItem("prname");
+      if(saved){
+          dispatch(control.profileimages(saved));
+      }
+      if(saved2){
+        dispatch(control.profilenames(saved2));
+
+      }
+    },[]);
+    useEffect(()=>{
         socket.emit("joinRoom",{roomId:"user1-user2"});
         const handler=(data)=>{
             if(data.sender===prname){
@@ -67,6 +78,8 @@ function Chat(){
 
       dispatch(control.deleteprofile());
       localStorage.removeItem("token");
+      localStorage.removeItem("primage");
+      localStorage.removeItem("prname");
       setoken(null);
       toast.error("USER LOGOUT");
       }

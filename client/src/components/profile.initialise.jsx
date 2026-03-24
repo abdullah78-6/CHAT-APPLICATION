@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 function Profile(){
     const dispatch=useDispatch();
     const primage=useSelector(state=>state.main.profileimage);
+    const prname=useSelector(state=>state.main.profilename);
     const [loading,setloading]=useState(false);
     const setname=useRef();
     const setimagepath=useRef();
@@ -15,10 +16,21 @@ function Profile(){
     const[profileimage,setprofileimage]=useState(false);
     function Set(){
         dispatch(control.profilenames(setname.current.value));
+        
+     localStorage.setItem("prname",setname.current.value);
+        
         const file=setimagepath.current.files[0];
         if(file){
             const imageurl=URL.createObjectURL(file);
-            dispatch(control.profileimages(imageurl));
+            const reader=new FileReader();
+            reader.onloadend=()=>{
+              const base64=reader.result;
+              dispatch(control.profileimages(base64));
+            localStorage.setItem("primage",base64);
+
+            };
+            reader.readAsDataURL(file);
+            
         }
         dispatch(control.getdata());
           setloading(true);
