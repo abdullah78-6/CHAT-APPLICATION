@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const pushmessage=createAsyncThunk(
     "push/msg",
     async({message})=>{
-        const res=await fetch("http://localhost:9000/app/push",{
+        const res=await fetch("https://chat-application-backend-6w7d.onrender.com/app/push",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json",
@@ -25,7 +25,7 @@ export const pushmessage=createAsyncThunk(
 export const Signin=createAsyncThunk(
     "push/signin",
     async({email,password})=>{
-        const res2=await fetch("http://localhost:9000/app/signin",{
+        const res2=await fetch("https://chat-application-backend-6w7d.onrender.com/app/signin",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json",
@@ -47,7 +47,7 @@ export const Signin=createAsyncThunk(
 export const Register=createAsyncThunk(
     "push/signup",
     async({name,email,password})=>{
-        const res2=await fetch("http://localhost:9000/app/signup",{
+        const res2=await fetch("https://chat-application-backend-6w7d.onrender.com/app/signup",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json",
